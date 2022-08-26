@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 - 找不到页面</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1"/>
+    <link rel="stylesheet" th:href="@{/css/semantic.css}">
+    <style>
+
+        body{
+            color: #333;
+            margin: auto;
+            padding: 1em;
+            display: table;
+            user-select: none;
+            box-sizing: border-box;
+            font: lighter 20px "微软雅黑";
+        }
+        a{
+            color: #3498db;
+            text-decoration: none;
+        }
+        h1{
+            margin-top: 0;
+            font-size: 3.5em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui container">
+        <h1>:(</h1>
+        <p style="color: red;">嗨，朋友！您的操作疑似XSS攻击哦~</p>
+        <p style="color: red;">请重新刷新网页,否则评论后无法显示哦~</p>
+    </div>
+
+</body>
+</html>

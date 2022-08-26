@@ -1,0 +1,7 @@
+因数据库设置了外键,导入sql的时候必须按顺序来
+1、user
+2、type
+3、article
+4、comment
+5、messageboard
+6、about

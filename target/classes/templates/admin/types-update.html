@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head><head th:replace="commons/adminHead::head(~{::title})">
+    <title>后台-分类修改</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<div th:replace="commons/adminHead::top"></div>
+
+    <div class="ui attached pointing menu">
+        <div class="ui container">
+            <div class="right menu">
+                <a th:href="@{/admin/typesinsert}" class="item">新增</a>
+                <a href="#" class="active teal item">修改</a>
+                <a th:href="@{/admin/types}" class="item">列表</a>
+
+            </div>
+        </div>
+    </div>
+
+    <!--中间内容-->
+    <div class="m-contrainer-small m-padded-tb-large">
+        <div class="ui container">
+            <form th:action="@{/admin/totypesupdate/}+${type.getId()}" method="post" class="ui form">
+                <div class="field">
+                    <div class="ui left labeled input m-padded-tb-large">
+                        <label class="ui teal basic label">原名称</label>
+                        <input type="text" th:value="${type.getName()}" disabled>
+                    </div>
+                    <div class="ui left labeled input">
+                        <label class="ui teal basic label">新名称</label>
+                        <input type="text" name="name" placeholder="分类名称">
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <p th:text="${msg}" style="color: red"></p>
+                <div class="ui right aligned container">
+                    <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                    <button  class="ui teal submit button">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <script th:src="@{/js/jquery-3.6.0.js}"></script>
+    <script th:src="@{/js/semantic.js}"></script>
+
+    <script>
+
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        $('.ui.dropdown').dropdown({
+            on: 'hover'
+        });
+
+        $('.ui.form').form({
+            fields: {
+                name: {
+                    identifier: 'name',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '名称不能为空'
+                        }
+                    ]
+                }
+            }
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>

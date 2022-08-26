@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/blogHead::head(~{::title})">
+    <title>Peng的小窝-关于我</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<div th:replace="commons/blogHead::top"></div>
+<div class="m-contrainer-small  m-padded-tb-large m-body-margin-top">
+
+    <div class="ui segment m-boder-radius">
+
+        <!-- 正文 -->
+        <div id="content" class="typo js-toc-content typo-selection m-padded-lr-responsive m-padded-tb-large"
+             th:utext="${about.getContent()}">
+        </div>
+
+    </div>
+
+</div>
+
+<!--音乐插件-->
+<meting-js
+        server="netease"
+        type="playlist"
+        id="2610967765"
+        fixed="true"
+        autoplay="true"
+        loop="all"
+        order="list"
+        preload="auto"
+        list-folded="true"
+        list-max-height="500px"
+        lrc-type="1">
+</meting-js>
+
+<!--引用script-->
+<th:block th:replace="commons/blogHead::script"></th:block>
+<script th:inline="JavaScript">
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.qq').popup();
+
+    $('.wechat').popup({
+        popup: $('.wechatQR.popup'),
+        position: 'bottom center'
+    })
+
+    //小人物
+    L2Dwidget.init({
+        "model": {
+            "jsonPath": "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            "scale": 1,
+            "hHeadPos": 0.5,
+            "vHeadPos": 0.618
+        },
+        "display": {"position": "right", "width": 100, "height": 170, "hOffset": 0, "vOffset": 0},
+        "mobile": {"show": false, "scale": 0.5},
+        "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+    });
+</script>
+</body>
+
+</html>

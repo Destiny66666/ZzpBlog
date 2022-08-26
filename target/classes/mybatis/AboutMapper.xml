@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzp.mapper.AboutMapper">
+
+    <select id="queryAbout" resultType="About">
+        select * from blog.about where id = 1
+    </select>
+
+    <update id="updateAbout" parameterType="About">
+        update blog.about set content = #{content} where id = #{id}
+    </update>
+
+</mapper>

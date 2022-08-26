@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:replace="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/css/semantic.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" th:href="@{/css/APlayer.min.css}">
+</head>
+<body>
+<!--导航-->
+<div class="ui top fixed menu" th:fragment="top">
+    <nav class="ui attached segment m-shadow-small m-padded-tb-mini">
+        <!-- 		滚轮进度条 -->
+        <div class="ui bottom indicating attached  progress" data-value="1" data-total="100" id="example4">
+            <div class="bar"></div>
+        </div>
+        <div class="ui secondary stackable menu m-padded-tb-mini ">
+            <h2 class="ui header left item">
+                Peng
+                <span style="font-size: 20px">的小窝</span>
+            </h2>
+
+            <div class="m-item item m-mobile-hide">
+                <div class="ui item  category search">
+                    <div class="ui icon input">
+                        <input id="title" type="text" name="title" class="prompt" placeholder="搜索文章" th:value="${title}">
+                        <i class="search link icon" id="search_btn" ></i>
+                    </div>
+                </div>
+            </div>
+            <a th:href="@{/}" class="m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
+            <a th:href="@{/types}" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+            <a th:href="@{/archives}" class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+            <a th:href="@{/messageboard}" class="m-item item m-mobile-hide"><i class="clipboard icon"></i>留言板</a>
+            <a th:href="@{/about}" class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+
+        </div>
+
+
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+</div>
+
+<!--底部footer-->
+<footer class="ui attached segment" th:fragment="footer">
+    <div class="ui center aligned container">
+        <p>@2022 By Peng</p>
+        <a href="https://beian.miit.gov.cn/">闽ICP备2021017145号</a>
+    </div>
+</footer>
+
+<th:block th:fragment="script">
+    <script th:src="@{/js/jquery-3.6.0.js}"></script>
+    <script th:src="@{/js/semantic.js}"></script>
+    <script th:src="@{/lib/prism/prism.js}"></script>
+    <script th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+    <script th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/js/jquery.scrollTo.min.js}"></script>
+
+    <script th:src="@{/js/index.js}"></script>
+    <script th:src="@{/js/APlayer.min.js}"></script>
+    <script th:src="@{/js/Meting.min.js}"></script>
+    <!--    <script th:src="@{/js/L2Dwidget.min.js}"></script>-->
+    <!--    <script th:src="@{/js/canvas-nest.min.js}"></script> 鼠标蜘蛛网.js -->
+    <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+</th:block>
+
+</body>
+</html>

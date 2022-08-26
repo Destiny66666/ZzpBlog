@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzp.mapper.ArticleMapper">
+
+    <select id="adminQueryArticleByTidAndByTitle" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+        a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+        a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        <where>
+            <if test="tid != null and tid != ''">
+                tid = #{tid}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            and a.tid = t.`id` AND a.`uid` = u.`id`
+        </where>
+    </select>
+
+    <select id="adminQueryArticleAll" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+               a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+               a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        where a.tid = t.`id` AND a.`uid` = u.`id`
+    </select>
+
+    <insert id="addArticle" parameterType="Article">
+        insert into blog.article(tid, uid, title, content, firstPicture, firstArticleDescription, label, draft, shareStatement, deleted, comment, appreciation)
+        values(#{tid}, #{uid}, #{title}, #{content}, #{firstPicture}, #{firstArticleDescription}, #{label}, #{draft}, #{shareStatement}, #{deleted}, #{comment}, #{appreciation})
+    </insert>
+
+
+    <select id="queryArticleAll" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+               a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+               a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        where a.tid = t.`id` AND a.`uid` = u.`id` AND a.`deleted`=1 AND a.`draft` =0
+    </select>
+
+    <resultMap id="ArticleUserTypeMap" type="Article">
+        <result property="id" column="id"/>
+        <result property="tid" column="tid"/>
+        <result property="uid" column="uid"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="firstPicture" column="firstPicture"/>
+        <result property="firstArticleDescription" column="firstArticleDescription"/>
+        <result property="label" column="label"/>
+        <result property="draft" column="draft"/>
+        <result property="shareStatement" column="shareStatement"/>
+        <result property="deleted" column="deleted"/>
+        <result property="comment" column="comment"/>
+        <result property="appreciation" column="appreciation"/>
+        <result property="views" column="views"/>
+        <result property="comments" column="comments"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="updateTime"/>
+
+        <association property="user" javaType="User">
+            <result property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="avatar" column="avatar"/>
+        </association>
+
+        <association property="type" javaType="Type">
+            <result property="id" column="id"/>
+            <result property="name" column="name"/>
+        </association>
+
+    </resultMap>
+
+
+    <delete id="deleteArticleById" parameterType="Article">
+        delete from blog.article where id = #{id}
+    </delete>
+
+    <select id="adminQueryArticleById" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+               a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+               a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        where a.tid = t.`id` AND a.`uid` = u.`id` AND a.id = #{id}
+    </select>
+
+    <select id="queryArticleById" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+               a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+               a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        where a.tid = t.`id` AND a.`uid` = u.`id` AND a.id = #{id} AND a.`deleted`=1 AND a.`draft` =0
+    </select>
+    
+    <update id="updateArticleById" parameterType="Article">
+        update blog.article
+        set tid = #{tid}, title = #{title}, content = #{content}, firstPicture = #{firstPicture}, firstArticleDescription = #{firstArticleDescription},
+            label = #{label}, draft = #{draft}, shareStatement = #{shareStatement}, deleted = #{deleted}, comment = #{comment}, appreciation = #{appreciation},
+            updateTime = #{updateTime}
+        where id = #{id}
+    </update>
+
+    <select id="queryArticleByTidAndByTitle" resultMap="ArticleUserTypeMap">
+        select a.id, a.tid, a.uid, a.title, a.content, a.firstPicture, a.firstArticleDescription, a.label,
+               a.draft, a.shareStatement, a.deleted, a.comment, a.appreciation, a.views, a.comments, a.createTime,
+               a.updateTime, u.id, u.username, u.avatar, t.id, t.name
+        from article a, user u, type t
+        <where>
+            <if test="tid != null and tid != ''">
+                tid = #{tid}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            and a.tid = t.`id` AND a.`uid` = u.`id` AND a.`deleted`=1 AND a.`draft` =0
+        </where>
+    </select>
+
+    <update id="addArticleViewsById" parameterType="Article">
+        update blog.article set views = views + 1 where id = #{id}
+    </update>
+
+    <select id="queryArticleYear" resultType="String">
+        SELECT DATE_FORMAT(article.`createTime`, '%Y') AS YEAR FROM blog.`article` GROUP BY YEAR ORDER BY YEAR DESC
+    </select>
+
+    <select id="queryArticleByYear" resultType="Article">
+        SELECT * FROM blog.`article` WHERE DATE_FORMAT(article.`createTime`, '%Y') = #{year} AND `deleted`=1 AND `draft` =0 ORDER BY createTime DESC
+    </select>
+
+    <update id="addArticleCommentsById" parameterType="Article">
+        update blog.article set comments = comments + 1 where id = #{id}
+    </update>
+
+    <update id="deleteArticleCommentsById" parameterType="Article">
+        update blog.article set comments = comments - 1 where id = #{id}
+    </update>
+
+    <select id="queryArticleCount" resultType="int">
+        select count(*) from blog.article where `deleted`=1 AND `draft` =0
+    </select>
+
+
+    <select id="queryArticleViewsSum" resultType="int">
+        SELECT SUM(article.views) FROM blog.`article` WHERE article.`deleted` = 1 AND article.`draft` = 0
+    </select>
+
+    <select id="queryArticleCommentSum" resultType="int">
+        SELECT SUM(article.comments) FROM blog.`article` WHERE article.`deleted` = 1 AND article.`draft` = 0
+    </select>
+</mapper>

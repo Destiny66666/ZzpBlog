@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/adminHead::head(~{::title})">
+    <title>后台-关于我管理</title>
+</head>
+<body>
+<link rel="stylesheet" th:href="@{/css/typo.css}">
+<!-- 导航 -->
+<div th:replace="commons/adminHead::top"></div>
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" class="active teal item">展示</a>
+            <a th:href="@{/admin/aboutupdate}" class="teal item">修改</a>
+        </div>
+    </div>
+</div>
+<div class="m-contrainer-small  m-padded-tb-large">
+
+    <div class="ui container">
+        <!-- 内容 -->
+        <div class="ui attached padded segment">
+            <!-- 正文 -->
+            <div id="content" class="typo js-toc-content typo-selection m-padded-lr-responsive m-padded-tb-large"
+                 th:utext="${about.getContent()}">
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

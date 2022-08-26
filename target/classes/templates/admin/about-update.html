@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/adminHead::head(~{::title})">
+    <title>后台-关于我修改</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<div th:replace="commons/adminHead::top"></div>
+
+    <div class="ui attached pointing menu">
+        <div class="ui container">
+            <div class="right menu">
+                <a th:href="@{/admin/about}" class="teal item">展示</a>
+                <a href="#" class="active teal item">修改</a>
+            </div>
+        </div>
+    </div>
+
+    <!--中间内容-->
+    <div class="m-padded-tb-large">
+        <div class="ui container">
+            <form id="blog-form" th:action="@{/admin/toaboutupdate}" method="post" class="ui form">
+
+                <div class="field">
+                    <div id="md-content" style="z-index: 1 !important;">
+                        <textarea name="content" cols="30" rows="10" style="display: none;"  th:text="${about.getContent()}"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="ui right aligned container">
+                    <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                    <button id="publish-btn" class="ui teal submit button" onclick="return confirm('确认修改？')">修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <script th:src="@{/js/jquery-3.6.0.js}"></script>
+    <script th:src="@{/js/semantic.js}"></script>
+    <script th:src="@{/lib/editormd/editormd.min.js}"></script>
+
+    <script>
+
+        //初始化Markdown
+        var contentEditor;
+        $(function () {
+            contentEditor = editormd("md-content", {
+                width: "100%",
+                height: 640,
+                syncScrolling: "single",
+                path: "/lib/editormd/lib/",
+                imageUpload: true, //同意图片上传
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: "/admin/uploadImg",       //图片上传URL 即后台的图片上传接口URL
+                emoji: true
+            });
+        });
+
+
+
+        $('.ui.form').form({
+            fields: {
+                content: {
+                    identifier: 'content',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '内容：内容不能为空！'
+                        }
+                    ]
+                }
+            }
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>

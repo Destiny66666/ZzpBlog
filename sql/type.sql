@@ -1,0 +1,21 @@
+DROP TABLE IF EXISTS `type`;
+
+CREATE TABLE `type` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '类型ID',
+  `name` VARCHAR(255) CHARACTER SET utf8 NOT NULL COMMENT '类型名称',
+  `number` INT DEFAULT '0' COMMENT '文章数量',
+  `createTime` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `type` */
+
+INSERT  INTO `type`(`id`,`name`,`number`,`createTime`,`updateTime`) VALUES 
+(1,'我的故事',0,'2022-08-09 13:47:48','2022-08-18 12:29:27'),
+(2,'spring',0,'2022-08-07 13:07:11','2022-08-18 12:29:28'),
+(3,'Vue',0,'2022-08-07 13:31:35','2022-08-07 13:31:35'),
+(4,'游戏',0,'2022-08-07 14:04:43','2022-08-25 14:59:43'),
+(5,'Java',2,'2022-08-07 14:10:25','2022-08-25 21:45:17'),
+(6,'本站技术',4,'2022-08-07 15:35:17','2022-08-20 14:58:05'),
+(7,'插件',2,'2022-08-09 12:43:11','2022-08-20 14:54:04');

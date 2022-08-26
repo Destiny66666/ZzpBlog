@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/blogHead::head(~{::title})">
+    <title>小郑的小窝-搜索</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<div th:replace="commons/blogHead::top"></div>
+<!--中间内容-->
+<div class="m-padded-tb-large m-body-margin-top">
+    <div class="ui container">
+
+        <!--content-->
+        <div id="searchList"></div>
+
+        <!--  bottom -->
+        <div class="ui middle aligned centered grid m-padded-tb-big" id="blogPaging"></div>
+
+    </div>
+</div>
+
+<!--音乐插件-->
+<meting-js
+        server="netease"
+        type="playlist"
+        id="2610967765"
+        fixed="true"
+        autoplay="true"
+        loop="all"
+        order="list"
+        preload="auto"
+        list-folded="true"
+        list-max-height="500px"
+        lrc-type="1">
+</meting-js>
+<!--引用script-->
+<th:block th:replace="commons/blogHead::script"></th:block>
+<script th:src="@{/js/jquery-3.6.0.js}"></script>
+<script th:src="@{/js/semantic.js}"></script>
+<script th:inline="JavaScript">
+
+    $(function () {
+        BlogListSearch();
+    });
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    })
+
+    function BlogListSearch(pageNum, pageSize) {
+        $.ajax({
+            url: "/blogListSearch",
+            type: "GET",
+            data: {
+                "pageNum": pageNum,
+                "pageSize": pageSize,
+                "title":$("#title").val()
+            },
+            success: function (data) {
+                $("#searchList").empty();
+                $.each(data.list, function (index, item) {
+                    $("<div class=\"ui attached animate__animated animate__fadeInUp\"></div>").append(
+                        $("<div class=\"d-web-info-box\" data-wow-duration=\"0.4s\"></div>").append(
+                            $("<div class=\"ui mobile reversed stackable grid\"></div>").append(
+                                //博客展示内容
+                                $("<div class=\"nine wide column h-padded-td-large\"></div>").append(
+                                    $("<a ></a>").attr("href", "javascript:;").append(
+                                        $("<h3 class=\"ui header titleSuspension\"></h3>").append(item.title)
+                                    ).on("click", function () {
+                                        window.location.href = "/blog/" + item.id;
+                                    })
+                                ).append(
+                                    $("<p class=\"m-text\"></p>").append(item.firstArticleDescription)
+                                ).append(
+                                    $("<div class=\"ui grid\"></div>").append(
+                                        $("<div class=\"wide column\"></div>").append(
+                                            $("<div class=\"ui mini horizontal link list\"></div>").append(
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<div class=\"content\"></div>").append(
+                                                        // 博客创建者
+                                                        $("<span class=\"header\"></span>").append(
+                                                            $("<i class = \"user outline red  icon\" ></i>")
+                                                        ).append(item.user.username)
+                                                    )
+                                                )
+                                            ).append(
+                                                //创建时间
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"calendar green icon\"></i>")
+                                                ).append(transformTimestamp(item.createTime))
+                                            ).append(
+                                                // 浏览量
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"eye blue icon\"></i>")
+                                                ).append(" " + item.views)
+                                            ).append(
+                                                // 评论量
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"comment alternate outline orange icon\"></i>")
+                                                ).append(" " + item.comments)
+                                            )
+                                        )
+                                    )
+                                )
+                            ).append(
+                                // 博客图片
+                                $("<div class=\"seven wide column\" style='overflow: hidden;'></div>").append(
+                                    $("<img  class=\"ui rounded image centered Itemimg\"/>")
+                                        .attr("src", item.firstPicture)
+                                )
+                            )
+                        )
+                    ).appendTo("#searchList");
+                })
+
+                $("#blogPaging").empty();
+                if (data.navigatepageNums.length > 1) {
+                    let div = $("<div class=\"ui pagination menu\"></div>");
+                    div.append(
+                        $("<a class=\"item\">上一页&nbsp;&nbsp;&nbsp;</a>").on("click", function () {
+                            BlogListSearch(data.prePage, null);
+                        })
+                    )
+                    $.each(data.navigatepageNums, function (index, item) {
+                        div.append(
+                            $("<a class=\"item \"></a>").append(item).addClass(item == data.pageNum ? "active" : "").on("click", function () {
+                                BlogListSearch(item, null);
+                            })
+                        )
+                    })
+                    div.append(
+                        $("<a class=\"item\">&nbsp;&nbsp;&nbsp;下一页</a>").on("click", function () {
+                            BlogListSearch(data.nextPage, null);
+                        })
+                    )
+                    div.appendTo("#blogPaging");
+                }
+            }
+        })
+    }
+
+    function transformTimestamp(timestamp) {
+        let a = new Date(timestamp).getTime();
+        const date = new Date(a);
+        const Y = date.getFullYear() + '-';
+        const M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        const D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + '  ';
+        const h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        const m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        const s = date.getSeconds(); // 秒
+        const dateString = Y + M + D + h + m + s;
+        // console.log('dateString', dateString); // > dateString 2021-07-06 14:23
+        return dateString;
+    }
+
+    //小人物
+    L2Dwidget.init({
+        "model": {
+            "jsonPath": "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            "scale": 1,
+            "hHeadPos": 0.5,
+            "vHeadPos": 0.618
+        },
+        "display": {"position": "right", "width": 100, "height": 170, "hOffset": 0, "vOffset": 0},
+        "mobile": {"show": false, "scale": 0.5},
+        "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+    });
+</script>
+</body>
+
+</html>

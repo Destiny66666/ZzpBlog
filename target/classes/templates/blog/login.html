@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/blogHead::head(~{::title})">
+    <title>后台登录</title>
+</head>
+
+<body>
+    <div class="m-contrainer-small">
+        <div class="ui container">
+            <div class="column">
+                <h2 class="ui center aligned teal header">
+                    <div class="content">
+                        后台登录
+                    </div>
+                </h2>
+                <form class="ui large form" th:action="@{/toLogin}" method="post">
+                    <div class="ui stacked segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text"  name="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="ui fluid large teal submit button">登录</div>
+                    </div>
+
+                    <div id="error" class="ui error message"></div>
+                    <p th:text="${msg}" style="color: red"></p>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--引用script-->
+    <th:block th:replace="commons/blogHead::script" ></th:block>
+    <script>
+        $('.ui.form').form({
+            fields: {
+                username: {
+                    identifier: 'username',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '用户名不能为空！'
+                        }
+                    ]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '密码不能为空！'
+                        }
+                    ]
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

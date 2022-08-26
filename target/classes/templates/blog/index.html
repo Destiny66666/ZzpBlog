@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="commons/blogHead::head(~{::title})">
+    <title>Peng的小窝</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<div th:replace="commons/blogHead::top"></div>
+<!-- 背景图 -->
+<div id="indexBackground">
+    <div class="h-bg-text">
+        <center>
+            <p id="p-title" class="text-animation">
+            </p>
+        </center>
+    </div>
+    <div class="h-bg-text">
+        <a href="javascript:;" class="h-text-font-size-plus" id="scroll_down_btn">
+            <i class="angle down icon animate__animated animate__bounce"
+               style="color: rgb(255, 255, 255); caret-color: rgb(255, 255, 255);"></i>
+        </a>
+    </div>
+</div>
+<!--中间内容-->
+<div class="m-padded-tb-large" id="Indexbody">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <!--左边博客列表-->
+            <div class="eleven wide column">
+                <!--content-->
+                <div id="contentList"></div>
+
+                <!--  bottom -->
+                <div class="ui middle aligned centered grid m-padded-tb-big" id="blogPaging"></div>
+
+            </div>
+            <!--右边-->
+            <div class="five wide column">
+                <div class="d-web-info-box">
+                    <div class="d-web-user-info-box">
+                        <img th:src="@{/image/adminAvatar.jpg}" alt="" class="avatarImg user-image">
+                        <h3 class="m-margin-tb-large m-margin-bottom">Peng</h3>
+                        <span>永远相信，美好的事情即将发生</span>
+                    </div>
+                    <div class="ui aligned centered grid m-padded-tb-large">
+                        <span class="m-text">
+                                文章<br>
+                            <a href="javascript:;" class="m-text-span">[[${articleCount}]]</a>
+                        </span>
+                        <span class="m-text">
+                            标签<br>
+                            <a href="javascript:;" class="m-text-span">[[${typeCount}]]</a>
+                        </span>
+                        <span class="m-text">
+                            评论<br>
+                            <a href="javascript:;" class="m-text-span">[[${commentSum}]]</a>
+                        </span>
+                        <span class="m-text">
+                            浏览量<br>
+                            <a href="javascript:;" class="m-text-span">[[${viewsSum}]]</a>
+                        </span>
+                    </div>
+                    <div class="m-padded-tb">
+                        <span><i class="rocket icon"></i>社交</span>
+                    </div>
+                    <div class="ui aligned centered  middle grid m-padded-tb">
+                        <p class="m-text-font-size">
+                            <i class="wechat green icon"></i>
+                            <a th:href="@{/image/index/wechat.png}" target="_blank">微信</a>
+                        </p>
+                        <p class="m-text-font-size">
+                            <i class="qq blue icon"></i>
+                            <a th:href="@{/image/index/qq.png}" target="_blank">qq</a>
+                        </p>
+                        <p class="m-text-font-size">
+                            <i class="github square black icon"></i>
+                            <a href="#">GitHub</a>
+                        </p>
+                    </div>
+                    <div class="m-padded-tb-small">
+                        <span><i class="tags icon"></i>标签</span>
+                    </div>
+                    <div class="m-padded-tb-small">
+                        <div class="ui" id="typesList">
+
+                        </div>
+                    </div>
+                    <div class="m-padded-tb-small">
+                        <span><i class="globe icon"></i> 网站运行时间</span>
+
+                    </div>
+                    <div class="m-padded-tb-small">
+                        <span id="htmer_time"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--音乐插件-->
+<meting-js
+        server="netease"
+        type="playlist"
+        id="2610967765"
+        fixed="true"
+        autoplay="true"
+        loop="all"
+        order="list"
+        preload="auto"
+        list-folded="true"
+        list-max-height="500px"
+        lrc-type="1">
+</meting-js>
+
+<!--尾部-->
+<div th:replace="commons/blogHead::footer"></div>
+
+
+<!--引用script-->
+<th:block th:replace="commons/blogHead::script"></th:block>
+<script th:inline="JavaScript">
+
+    $(function () {
+        $("#indexBackground").attr("style", "margin-top: 60px;background: url('/image/index/bg" + Math.round(Math.random() * (2 - 1) + 1) + ".jpg')  center center / cover no-repeat;")
+        RandomlyGetFamousQuotes();
+        TypeShowList()
+        BlogList()
+    });
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    })
+
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }
+
+    function setTime() {
+        /*此处为网站的创建时间*/
+        var create_time = Math.round(new Date(Date.UTC(2022, 07, 22, 18, 01, 01)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = '本站已运行：' + currentTime[0] + '年' + currentTime[1] + '天'
+            + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4]
+            + '秒';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }
+
+    setInterval(setTime, 1000);
+
+
+    $(document).on("click", "#scroll_down_btn", function () {
+        $(window).scrollTo($("#scroll_down_btn"), 1000);
+    })
+
+    function RandomlyGetFamousQuotes() {
+        $.ajax({
+            url: "https://v1.hitokoto.cn/",
+            data: {
+                Cati: "d",
+                max_length: "20"
+            },
+            type: "GET",
+            success: function (data) {
+                $("#p-title").text(data.hitokoto);
+            }
+        })
+    }
+
+    function BlogList(pageNum, pageSize) {
+        $.ajax({
+            url: "/blogList",
+            type: "GET",
+            data: {
+                "pageNum": pageNum,
+                "pageSize": pageSize
+            },
+            success: function (data) {
+                $("#contentList").empty();
+                $.each(data.list, function (index, item) {
+                    $("<div class=\"ui attached animate__animated animate__fadeInUp\"></div>").append(
+                        $("<div class=\"d-web-info-box\" data-wow-duration=\"0.4s\"></div>").append(
+                            $("<div class=\"ui mobile reversed stackable grid\"></div>").append(
+                                //博客展示内容
+                                $("<div class=\"nine wide column h-padded-td-large\"></div>").append(
+                                    $("<a ></a>").attr("href", "javascript:;").append(
+                                        $("<h3 class=\"ui header titleSuspension\"></h3>").append(item.title)
+                                    ).on("click", function () {
+                                        window.location.href = "/blog/" + item.id;
+                                    })
+                                ).append(
+                                    $("<p class=\"m-text\"></p>").append(item.firstArticleDescription)
+                                ).append(
+                                    $("<div class=\"ui grid\"></div>").append(
+                                        $("<div class=\"wide column\"></div>").append(
+                                            $("<div class=\"ui mini horizontal link list\"></div>").append(
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<div class=\"content\"></div>").append(
+                                                        // 博客创建者
+                                                        $("<span class=\"header\"></span>").append(
+                                                            $("<i class = \"user outline red  icon\" ></i>")
+                                                        ).append(item.user.username)
+                                                    )
+                                                )
+                                            ).append(
+                                                //创建时间
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"calendar green icon\"></i>")
+                                                ).append(transformTimestamp(item.createTime))
+                                            ).append(
+                                                // 浏览量
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"eye blue icon\"></i>")
+                                                ).append(" " + item.views)
+                                            ).append(
+                                                // 评论量
+                                                $("<div class=\"item\"></div>").append(
+                                                    $("<i class=\"comment alternate outline orange icon\"></i>")
+                                                ).append(" " + item.comments)
+                                            )
+                                        )
+                                    )
+                                )
+                            ).append(
+                                // 博客图片
+                                $("<div class=\"seven wide column\" style='overflow: hidden;'></div>").append(
+                                    $("<img  class=\"ui rounded image centered Itemimg\"/>")
+                                        .attr("src", item.firstPicture)
+                                )
+                            )
+                        )
+                    ).appendTo("#contentList");
+                })
+
+                $("#blogPaging").empty();
+                if (data.navigatepageNums.length > 1) {
+                    let div = $("<div class=\"ui pagination menu\"></div>");
+                    div.append(
+                        $("<a class=\"item\">上一页&nbsp;&nbsp;&nbsp;</a>").on("click", function () {
+                            $(window).scrollTo($("#scroll_down_btn"));
+                            BlogList(data.prePage, null);
+                        })
+                    )
+                    $.each(data.navigatepageNums, function (index, item) {
+                        div.append(
+                            $("<a class=\"item \"></a>").append(item).addClass(item == data.pageNum ? "active" : "").on("click", function () {
+                                $(window).scrollTo($("#scroll_down_btn"));
+                                BlogList(item, null);
+                            })
+                        )
+                    })
+                    div.append(
+                        $("<a class=\"item\">&nbsp;&nbsp;&nbsp;下一页</a>").on("click", function () {
+                            $(window).scrollTo($("#scroll_down_btn"));
+                            BlogList(data.nextPage, null);
+                        })
+                    )
+                    div.appendTo("#blogPaging");
+                }
+            }
+        })
+    }
+
+    function TypeShowList() {
+        $.ajax({
+            url: "/typeList",
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (index, item) {
+                    var color = new Array("orange", "teal", "blue", "grey", "red");
+                    var random = Math.floor(Math.random() * 10) % color.length;
+                    $("<a href=\"javascript:;\" class=\"ui left label  m-margin-tb-tiny\"></a>").addClass(color[random]).append(
+                        $("<span></span>").append(item.name)
+                    ).on("click", function () {
+                        window.location.href = "/types/" + item.id;
+                    }).appendTo("#typesList");
+                })
+            }
+        })
+    }
+
+    function transformTimestamp(timestamp) {
+        let a = new Date(timestamp).getTime();
+        const date = new Date(a);
+        const Y = date.getFullYear() + '-';
+        const M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        const D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + '  ';
+        const h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        const m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        const s = date.getSeconds(); // 秒
+        const dateString = Y + M + D + h + m + s;
+        // console.log('dateString', dateString); // > dateString 2021-07-06 14:23
+        return dateString;
+    }
+
+    //小人物
+    L2Dwidget.init({
+        "model": {
+            "jsonPath": "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            "scale": 1,
+            "hHeadPos": 0.5,
+            "vHeadPos": 0.618
+        },
+        "display": {"position": "right", "width": 100, "height": 170, "hOffset": 0, "vOffset": 0},
+        "mobile": {"show": false, "scale": 0.5},
+        "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+    });
+
+</script>
+</body>
+
+</html>
