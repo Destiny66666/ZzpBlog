@@ -15,4 +15,4 @@ CREATE TABLE `user` (
 /*Data for the table `user` */
 
 INSERT  INTO `user`(`id`,`username`,`password`,`perms`,`email`,`avatar`,`createTime`,`updateTime`) VALUES 
-(1,'Peng','f37a9c8558a4343b38b5054efe699177','1','2089229187@qq.com','/image/adminAvatar.jpg','2022-08-06 13:30:08','2022-08-25 10:36:20');
+(1,'admin','038bdaf98f2037b31f1e75b5b4c9b26e','1','2089229187@qq.com','/image/adminAvatar.jpg','2022-08-06 13:30:08','2022-08-25 10:36:20');
