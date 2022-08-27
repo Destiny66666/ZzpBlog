@@ -13,7 +13,7 @@
 <div class="m-contrainer-small m-padded-tb-large m-body-margin-top">
     <div class="ui container">
         <div class="d-web-info-box" th:if="${articleList} == null" id="wrap">
-                <center><h1 class="ui ">标签-[[${count}]]</h1></center>
+                <center><h1 class="ui ">分类-[[${count}]]</h1></center>
                 <div class="ui aligned centered grid m-padded-tb-large" >
                     <a th:each="type : ${typeList}" th:href="@{/types/}+${type.getId()}" class="ui basic button typeSuspension">[[${type.getName()}]]</a>
                 </div>
